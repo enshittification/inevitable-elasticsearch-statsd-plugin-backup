@@ -10,6 +10,7 @@ The data sent to the StatsD server tries to be roughly equivalent to the [Indice
 
 | Elasticsearch  | Plugin         | Release date |
 | -------------- | -------------- | ------------ |
+| 7.0.0          | 7.0.0.0        | Jan 7,  2019 |
 | 6.8.1          | 6.8.1.0        | Jun 26, 2019 |
 | 6.8.0          | 6.8.0.0        | Jun 26, 2019 |
 | 6.7.2          | 6.7.2.0        | Jun 26, 2019 |
@@ -89,14 +90,14 @@ The data sent to the StatsD server tries to be roughly equivalent to the [Indice
 | < 1.5.x        | 0.3.3          | Aug 20, 2014 |
 
 
-## Installation Elasticsearch 6.x
+## Installation Elasticsearch >= 6.x
 
 The plugin artifacts are published to Maven Central and Github. To install a prepackaged plugin for ES 6.x+ use the following command:
 
 From Github:
 
 ```
-./bin/elasticsearch-plugin install https://github.com/Automattic/elasticsearch-statsd-plugin/releases/download/6.8.1.0/elasticsearch-statsd-6.8.1.0.zip
+./bin/elasticsearch-plugin install https://github.com/Automattic/elasticsearch-statsd-plugin/releases/download/7.0.0.0/elasticsearch-statsd-7.0.0.0.zip
 ```
 
 From Maven Central:
@@ -117,7 +118,7 @@ mvn clean package -Djava.security.policy=src/test/resources/plugin-security-test
 Once we have the artifact, install it with the following command:
 
 ```
-bin/elasticsearch-plugin install file:///absolute/path/to/current/dir/target/releases/elasticsearch-statsd-6.8.1.0.zip
+bin/elasticsearch-plugin install file:///absolute/path/to/current/dir/target/releases/elasticsearch-statsd-7.0.0.0.zip
 ```
 
 ## Installation Elasticsearch 5.x

@@ -52,7 +52,6 @@ public class StatsdService extends AbstractLifecycleComponent {
 
     @Inject
     public StatsdService(Settings settings, Client client, ClusterService clusterService, IndicesService indicesService, NodeService nodeService) {
-        super(settings);
         this.client = client;
         this.clusterService = clusterService;
         this.indicesService = indicesService;
