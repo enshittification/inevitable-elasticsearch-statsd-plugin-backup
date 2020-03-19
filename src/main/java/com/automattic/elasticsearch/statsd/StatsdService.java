@@ -171,7 +171,7 @@ public class StatsdService extends AbstractLifecycleComponent {
                                 try {
                                     StatsdReporter nodeIndicesStatsReporter = new StatsdReporterNodeIndicesStats(
                                             StatsdService.this.indicesService.stats(
-                                                    false // includePrevious
+                                                null // don't include previous stats
                                             ),
                                             statsdNodeName
                                     );
