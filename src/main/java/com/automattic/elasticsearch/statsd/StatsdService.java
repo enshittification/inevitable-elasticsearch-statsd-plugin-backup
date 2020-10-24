@@ -43,6 +43,7 @@ public class StatsdService extends AbstractLifecycleComponent {
     private final boolean statsdReportShards;
     private final boolean statsdReportFsDetails;
     private final boolean statsdSendHttpStats;
+    private final boolean statsdSendIndexingBackPressure;
     private final StatsDClient statsdClient;
 
     private final Thread statsdReporterThread;
@@ -67,6 +68,7 @@ public class StatsdService extends AbstractLifecycleComponent {
         this.statsdReportShards = StatsdPlugin.REPORT_SHARDS_S.get(settings);
         this.statsdReportFsDetails = StatsdPlugin.REPORT_FS_DETAILS_S.get(settings);
         this.statsdSendHttpStats = !StatsdPlugin.TEST_MODE_S.get(settings);
+        this.statsdSendIndexingBackPressure = StatsdPlugin.INDEXING_PRESSURE_S.get(settings);
 
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
@@ -155,10 +157,13 @@ public class StatsdService extends AbstractLifecycleComponent {
                                                 false,                              // discoveryStats
                                                 false,                              // ingest
                                                 false,                              // adaptiveSelection
-                                                false                               // scriptCache
+                                                false,                               // scriptCache
+                                                statsdSendIndexingBackPressure                   //indexing pressure
                                         ),
                                         statsdNodeName,
-                                        StatsdService.this.statsdReportFsDetails
+                                        StatsdService.this.statsdReportFsDetails,
+                                        StatsdService.this.statsdSendIndexingBackPressure
+
                                 );
                                 nodeStatsReporter
                                         .setStatsDClient(StatsdService.this.statsdClient)

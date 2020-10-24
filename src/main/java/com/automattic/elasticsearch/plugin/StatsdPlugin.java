@@ -23,6 +23,7 @@ public class StatsdPlugin extends Plugin {
     public static final Setting<Boolean> REPORT_FS_DETAILS_S = Setting.boolSetting("metrics.statsd.report.fs_details", false, Setting.Property.NodeScope);
     public static final Setting<String> NODE_NAME_S = new Setting<>("metrics.statsd.node_name", "", Function.identity(), Setting.Property.NodeScope);
     public static final Setting<String> PREFIX_S = new Setting<>("metrics.statsd.prefix", "", Function.identity(), Setting.Property.NodeScope);
+    public static final Setting<Boolean> INDEXING_PRESSURE_S = Setting.boolSetting("metrics.statsd.report.indexing_pressure", false,  Setting.Property.NodeScope);
 
     // This setting should not be used in production as it will turn off sending http stats. This is just a HACK to
     // disable http stats when running integrations tests
@@ -40,13 +41,14 @@ public class StatsdPlugin extends Plugin {
                 REPORT_FS_DETAILS_S,
                 NODE_NAME_S,
                 PREFIX_S,
-                TEST_MODE_S
+                TEST_MODE_S,
+                INDEXING_PRESSURE_S
         );
     }
 
     @Override
     public Collection<Class<? extends LifecycleComponent>> getGuiceServiceClasses() {
-                Collection<Class<? extends LifecycleComponent>> list = new ArrayList<>(1);
+        Collection<Class<? extends LifecycleComponent>> list = new ArrayList<>(1);
         list.add(StatsdService.class);
         return list;
     }
