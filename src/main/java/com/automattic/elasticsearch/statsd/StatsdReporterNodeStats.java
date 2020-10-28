@@ -2,6 +2,7 @@ package com.automattic.elasticsearch.statsd;
 
 import org.elasticsearch.action.admin.cluster.node.stats.NodeStats;
 import org.elasticsearch.http.HttpStats;
+import org.elasticsearch.index.stats.IndexingPressureStats;
 import org.elasticsearch.monitor.fs.FsInfo;
 import org.elasticsearch.monitor.jvm.JvmStats;
 import org.elasticsearch.monitor.os.OsStats;
@@ -14,11 +15,13 @@ public class StatsdReporterNodeStats extends StatsdReporter {
     private final NodeStats nodeStats;
     private final String nodeName;
     private final Boolean statsdReportFsDetails;
+    private final Boolean reportIndexBackPressure;
 
-    public StatsdReporterNodeStats(NodeStats nodeStats, String nodeName, Boolean statsdReportFsDetails) {
+    public StatsdReporterNodeStats(NodeStats nodeStats, String nodeName, Boolean statsdReportFsDetails,Boolean reportIndexBackPressure) {
         this.nodeStats = nodeStats;
         this.nodeName = nodeName;
         this.statsdReportFsDetails = statsdReportFsDetails;
+        this.reportIndexBackPressure = reportIndexBackPressure;
     }
 
     public void run() {
@@ -30,6 +33,9 @@ public class StatsdReporterNodeStats extends StatsdReporter {
             this.sendNodeHttpStats(this.nodeStats.getHttp());
             this.sendNodeTransportStats(this.nodeStats.getTransport());
             this.sendNodeThreadPoolStats(this.nodeStats.getThreadPool());
+            if(reportIndexBackPressure){
+                this.sendIndexingBackPressureStats(this.nodeStats.getIndexingPressureStats());
+            }
         } catch (Exception e) {
             this.logException(e);
         }
@@ -47,6 +53,23 @@ public class StatsdReporterNodeStats extends StatsdReporter {
             this.sendGauge(threadPoolType, "largest", stats.getLargest());
             this.sendGauge(threadPoolType, "completed", stats.getCompleted());
         }
+    }
+
+    private void sendIndexingBackPressureStats(IndexingPressureStats indexingPressureStats){
+        String prefix = this.getPrefix("indexing_pressure");
+        this.sendGauge(prefix,"primary_rejections",indexingPressureStats.getPrimaryRejections());
+        this.sendGauge(prefix,"replica_rejections",indexingPressureStats.getReplicaRejections());
+        this.sendGauge(prefix,"coordinating_rejections",indexingPressureStats.getCoordinatingRejections());
+
+        this.sendGauge(prefix,"memory.current.primary",indexingPressureStats.getCurrentPrimaryBytes());
+        this.sendGauge(prefix,"memory.current.replica",indexingPressureStats.getCurrentReplicaBytes());
+        this.sendGauge(prefix,"memory.current.coordinating",indexingPressureStats.getTotalCoordinatingBytes());
+        this.sendGauge(prefix,"memory.current.all",indexingPressureStats.getCurrentCombinedCoordinatingAndPrimaryBytes());
+
+        this.sendGauge(prefix,"memory.total.coordinating",indexingPressureStats.getTotalCoordinatingBytes());
+        this.sendGauge(prefix,"memory.total.primary",indexingPressureStats.getTotalPrimaryBytes());
+        this.sendGauge(prefix,"memory.total.replica",indexingPressureStats.getTotalReplicaBytes());
+        this.sendGauge(prefix,"memory.total.all",indexingPressureStats.getTotalCombinedCoordinatingAndPrimaryBytes());
     }
 
     private void sendNodeTransportStats(TransportStats transportStats) {
