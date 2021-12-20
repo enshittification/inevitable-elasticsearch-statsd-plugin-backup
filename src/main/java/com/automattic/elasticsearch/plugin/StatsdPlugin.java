@@ -3,7 +3,7 @@ package com.automattic.elasticsearch.plugin;
 import com.automattic.elasticsearch.statsd.StatsdService;
 import org.elasticsearch.common.component.LifecycleComponent;
 import org.elasticsearch.common.settings.Setting;
-import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.core.TimeValue;
 import org.elasticsearch.plugins.Plugin;
 
 import java.util.ArrayList;
