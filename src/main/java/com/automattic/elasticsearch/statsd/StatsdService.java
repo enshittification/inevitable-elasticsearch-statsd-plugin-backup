@@ -17,7 +17,7 @@ import org.elasticsearch.common.component.AbstractLifecycleComponent;
 import org.elasticsearch.common.component.Lifecycle;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.core.TimeValue;
 import org.elasticsearch.common.util.concurrent.EsExecutors;
 import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.node.NodeService;
@@ -173,7 +173,7 @@ public class StatsdService extends AbstractLifecycleComponent {
                             }
 
                             // Maybe report index stats per node
-                            if (StatsdService.this.statsdReportNodeIndices && node.isDataNode()) {
+                            if (StatsdService.this.statsdReportNodeIndices && node.canContainData()) {
                                 try {
                                     StatsdReporter nodeIndicesStatsReporter = new StatsdReporterNodeIndicesStats(
                                             StatsdService.this.indicesService.stats(
