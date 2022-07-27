@@ -10,9 +10,10 @@ The data sent to the StatsD server tries to be roughly equivalent to the [Indice
 
 | Elasticsearch  | Plugin         | Release date |
 | -------------- | -------------- | ------------ |
+| 7.17.5         | 7.17.5.0       | Jul 27, 2022 |
 | 7.16.2         | 7.16.2.0       | Dec 20, 2021 |
 | 7.10.2         | 7.10.2.0       | Apr 20, 2021 |
-| 7.9.3          | 7.9.3.0        | Oct 27, 2020 | 
+| 7.9.3          | 7.9.3.0        | Oct 27, 2020 |
 | 7.8.1          | 7.8.1.0        | Aug 10, 2020 |
 | 7.5.1          | 7.5.1.0        | Mar 19, 2020 |
 | 7.0.0          | 7.0.0.0        | Jan 7,  2019 |
@@ -93,6 +94,23 @@ The data sent to the StatsD server tries to be roughly equivalent to the [Indice
 | 2.0.0          | 2.0.0.0        | Feb 12, 2016 |
 | 1.5.x to 1.7.x | 0.4.0          | Feb 3,  2016 |
 | < 1.5.x        | 0.3.3          | Aug 20, 2014 |
+
+## Local Upgrade
+
+In order to upgrade supported version you will need to change dependency in `pom.xml` and run tests.
+
+### Dependencies
+
+- jdk8 (not or higher:))
+- maven
+- env varibale JAVA_HOME set to the location of java home
+
+### Process
+
+Upgrade `pom.xml` with the new versions:
+* `<version>{NEW VERSION HERE}.0</version>`
+* `elasticsearch.version>{NEW VERSION HERE}</elasticsearch.version>`
+* Run `mvn clean verify -Djava.security.policy=src/test/resources/plugin-security-test.policy -Dtests.gradle=false`
 
 
 ## Installation Elasticsearch >= 6.x
